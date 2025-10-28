@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package benchtop.metrics.v1;
+
+option go_package = "github.com/binsquare/benchtop/proto/gen/go/metrics;metricspb";
+
+// TODO: fill in message definitions to mirror structs in internal/metrics_model.go.
+message SampleEnvelope {
+  string monotonic_nanos = 1;
+  string source = 2;
+  oneof payload {
+    GPUProcessSample gpu_process = 3;
+    SystemSample system = 4;
+    BenchSample bench = 5;
+  }
+}
+
+message GPUProcessSample {
+  int32 pid = 1;
+  string process_name = 2;
+  double busy_percent = 3;
+  uint64 active_ns = 4;
+  double frequency_mhz = 5;
+  double power_w = 6;
+  double temperature_c = 7;
+}
+
+message SystemSample {
+  double cpu_total_percent = 1;
+  repeated double cpu_per_core = 2;
+  double gpu_busy = 3;
+  double ane_busy = 4;
+  double dram_power_w = 5;
+  double gpu_temperature_c = 6;
+  double cpu_temperature_c = 7;
+  double gpu_power_w = 8;
+  double gpu_frequency_mhz = 9;
+}
+
+message BenchSample {
+  string phase = 1;
+  string workload_id = 2;
+  double throughput = 3;
+  double energy_joules = 4;
+  double temperature_c = 5;
+  string notes = 6;
+}
